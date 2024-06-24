@@ -5,6 +5,38 @@ const {validationResult} = require("express-validator");
 const { update } = require('./productocontroller');
 
 const perfilContoller = {
+
+    profile: function(req, res, next) {
+
+        let id = req.params.id;
+
+        let regla = {
+            include: [
+                {association: "productos"},
+                {association: "comentarios"}
+            ],
+            order: [
+                [{model: db.Product, as: 'productos'}, 'createdAt', 'DESC']
+            ]
+        }
+    
+        db.Usuario.findByPk(id, regla)
+
+            .then(function(results){
+
+                let condicion = false;
+
+                if (req.session.user != undefined && req.session.user.id == results.id) {
+                    condicion = true;
+                }
+
+                return res.render('profile', {title: `@${results.usuario}`, usuario: results, productos: results.productos, comentarios: results.comentarios.length, condition: condicion});
+            })
+            .catch(function(error){
+                console.log(error);
+            });
+    },
+    
     register: function(req, res, next){
         if (req.session.user != undefined) {
         return res.redirect("/users/profile/id" + req.session.user.id);
