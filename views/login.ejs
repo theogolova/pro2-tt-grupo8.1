@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- Include Head -->
+
+<%- include("./partials/head")%>
+
+<body>
+	<!-- Header -->
+	<% if (locals.user != undefined) { %>
+		<%- include("./partials/headerLogueado") %>
+	<% } else { %>
+		<%- include("./partials/header") %>
+	<% } %>
+	<!-- /Header -->
+
+	
+	<!-- Novedades -->
+	<div class="container products-wrapper">
+		<div class="row">
+			<div class="col-12">
+				<h2 class="products-title">Ingresar</h2>
+			</div>
+			<!-- Show the "ultimos" products -->
+			<div class="col-12"> 
+				<form action="/users/login" method="POST" class="loginForm">
+					<label class="recordar" for="email">Mail</label><br>
+					<input class="form-input" form-input type="email" id="email" name="email" value="<%= locals.old !== undefined && old.email ? old.email : "" %>"><br>
+					<% if (locals.errors && errors.email) { %>
+						<p class="feedback"><%= errors.email.msg %></p>
+					<% } %>
+	
+			 
+				<label class="recordar" for="password">Contraseña</label><br>
+				<input class="form-input" type="password" id="password" name="password" value="<%= locals.old !== undefined && old.password ? old.password : "" %>"><br>
+				<% if (locals.errors && errors.password) { %>
+					<p class="feedback"><%= errors.password.msg %></p>
+				<% } %>
+
+			 
+				<div class="recordarme">
+					<input class="botonRecordar" type="checkbox" id="remember" name="remember">
+					<label class="recordar" for="remember">Recordarme</label><br>
+				</div>
+
+				<button type="submit" class="buy-now-button">Iniciar sesión</button>
+				</form>
+				
+			</div>
+			
+	<!-- footer -->
+	<%- include("./partials/footer")%>
+	<!-- /footer -->
+</body>
+
+</html>
