@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- Include Head -->
+
+
+<%- include("./partials/head")%>
+
+<body>
+	<!-- Header -->
+	<% if (locals.user != undefined) { %>
+		<%- include("./partials/headerLogueado") %>
+	<% } else { %>
+		<%- include("./partials/header") %>
+	<% } %>
+	<!-- /Header -->
+
+		<!-- Novedades -->
+		<div class="container products-wrapper">
+			<div class="row">
+				<div class="col-12">
+					<h2 class="products-title">Registrate</h2>
+				</div>
+				<!-- Show the "ultimos" products -->
+				<h2 class="col-12"> <form action="/users/register" method="post">
+					<div class="formGroup">
+						<label class="form-label" for="email">Email</label><br>
+						<input class="formInput" type="email"  name="email" value="<%= locals.old !== undefined && old.email ? old.email : "" %>"<br>
+						<% if (locals.errors && errors.email) { %>
+							<p class="feedback"><%= errors.email.msg %></p>
+						  <% } %>
+					</div>
+					
+				 
+					<div class="formGroup">
+						<label class="form-label" for="username">Usuario</label><br>
+						<input class="formInput" type="text" id="username" name="username"  value="<%= locals.old !== undefined && old.username ? old.username : "" %>"<br>
+						<% if (locals.errors && errors.username) { %>
+							<p class="feedback"><%= errors.username.msg %></p>
+						  <% } %>
+					</div>
+					<div class="formGroup">
+						<label class="form-label" for="password">Contraseña</label><br>
+						<input class="formInput" type="password" id="password" name="password" ><br>
+						<% if (locals.errors && errors.password) { %>
+							<p class="feedback"><%= errors.password.msg %></p>
+						  <% } %>
+					</div>
+					<div class="form-group">
+					  <label class="form-label" for="birthdate">Fecha de nacimiento</label><br>
+				<input class="formInput" type="date" id="birthdate" name="birthdate"><br>
+				<% if (locals.errors && errors.birthdate) { %>
+					<p class="feedback"><%= errors.birthdate.msg %></p>
+				  <% } %>
+					</div>
+					<div class="formGroup">
+					  <label for="document_number">Nro de Documento:</label>
+					  <input type="number" id="document_number" name="document_number" class="formInput" >
+					  <% if (locals.errors && errors.document_number) { %>
+						<p class="feedback"><%= errors.document_numbermsg %></p>
+					  <% } %>
+					</div>
+					<div class="formGroup">
+					<label class="form-label" for="profile_picture">Foto de perfil</label><br>
+				<input class="formInput" type="text" id="profile_picture" name="profile_picture"><br>
+				<% if (locals.errors && errors.profile_picture) { %>
+					<p class="feedback"><%= errors.profile_picture.msg %></p>
+				  <% } %>
+				</div>
+
+					<button type="submit" class="enviar">Registrarse</button>
+				  </form>
+				  
+				</h2>
+	
+
+	<%- include("./partials/footer")%>
+</body>
+
+</html>
