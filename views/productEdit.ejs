@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- Include Head -->
+
+<%- include("./partials/head") %>
+
+<body>
+	<!-- Header -->
+	<% if (locals.user != undefined) { %>
+		<%- include("./partials/headerLogueado") %>
+	<% } else { %>
+		<%- include("./partials/header") %>
+	<% } %>
+	<!-- /Header -->
+
+	<!-- Novedades -->
+
+	<div class="container products-wrapper">
+		<div class="row">
+			<div class="col-12">
+				<h2 class="products-title">Editar Producto</h2>
+			</div>
+
+			<form class="formPropio" action="/product/edit" method="POST">
+				<input type="hidden" name="id" value="<%= productos.id %>">
+				<input type="hidden" name="idUsuario" value="<%= productos.usuario.id %>">
+
+				<label class="form-label"for="nombreProd">Nombre del producto</label><br>
+				<input class="form-input" type="text" id="nombreProd" name="nombreProd" value="<%= (locals.old && locals.old.nombreProd !== undefined) ? locals.old.nombreProd : (productos && productos.nombreProd) %>"><br>
+				<% if (locals.errors && errors.nombreProd) { %>
+					<p class="feedback"><%= errors.nombreProd.msg %></p>
+				<% } %>
+				
+				<label class="form-label" for="imagenProd">Imagen</label><br>
+				<input class="form-input file-select" type="text" id="imagen" name="imagenProd" value="<%= (locals.old && locals.old.imagenProd !== undefined) ? locals.old.imagenProd : (productos && productos.imagenProd) %>"><br>
+				<% if (locals.errors && errors.imagenProd) { %>
+					<p class="feedback"><%= errors.imagenProd.msg %></p>
+				<% } %>
+
+				<label class="form-label" for="descripcion">Descripción</label><br>
+				<textarea class="form-input" id="descripcion" name="descripcion" rows="4"><%= (locals.old && locals.old.descripcion !== undefined) ? locals.old.descripcion : (productos && productos.descripcion) %></textarea><br>
+				<% if (locals.errors && errors.descripcion) { %>
+					<p class="feedback"><%= errors.descripcion.msg %></p>
+				<% } %>		 
+				
+				<button type="submit" class="buy-now-button botonRegister">Aceptar Cambios</button>
+			</form>
+		</div>
+	</div>
+
+	<!-- footer -->
+	
+	<%- include("./partials/footer") %>
+
+	<!-- /footer -->
+</body>
+
+</html>

@@ -3,6 +3,69 @@ const op = db.Sequelize.Op;
 const { validationResult } = require("express-validator");
 
 const productContoller = {
+    formUpdate: function(req, res) {
+    let form = req.body
+    let criterio = {
+        include: [
+            {association: "usuario"}
+        ]}
+
+    db.Product.findByPk(form.id, criterio)
+    .then(function(results){
+        return res.render("productEdit", {title:`editar ${results.nombreProd}`, productos: results})
+    })
+    .catch((err) => {
+        return console.log(err);
+    });
+},
+
+update: function(req, res) {
+    let form = req.body;
+    let errors = validationResult(req);
+
+    if (errors.isEmpty()) {
+        
+        let filtrado = {
+            where: {
+            id: form.id
+            }
+        } 
+
+        if (req.session.user != undefined) {
+            let id = req.session.user.id;
+            if (form.idUsuario == id) {
+                db.Product.update(form, filtrado)
+                .then((result) => {
+                    return res.redirect("/product/id/" + form.id)
+                }).catch((err) => {
+                    return console.log(err);
+                });
+            }
+            else{
+                return res.redirect("/users/profile");
+            }
+        }
+        else{
+            return res.redirect("/users/login");
+        }
+    } 
+    else {
+
+        let criterio = {
+            include: [
+              {association: "usuario"}
+            ]
+        }
+
+        db.Product.findByPk(form.id, criterio)
+        .then(function(results){
+            return res.render('productEdit', {title: "Edit Product", errors: errors.mapped(), old: req.body, productos: results });
+        })
+        .catch((err) => {
+            return console.log(err);
+        });       
+     } 
+},
     delete: function(req, res) {
         let form = req.body;
         
