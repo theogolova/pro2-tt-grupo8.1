@@ -188,3 +188,5 @@ else {
 
 }
 }
+
+module.exports = perfilContoller;
