@@ -89,4 +89,9 @@ loginUser: (req, res, next) => {
         res.render('login', {title: "Login", errors: errors.mapped(),  old: req.body, user: req.session.user});
     }
 },
+logout: (req,res, next) => {
+    req.session.destroy();
+    res.clearCookie("userId")
+    return res.redirect("/")
+},
 }
