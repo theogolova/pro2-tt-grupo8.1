@@ -126,4 +126,65 @@ logout: (req,res, next) => {
     res.clearCookie("userId")
     return res.redirect("/")
 },
+edit: function(req, res, next) {
+
+    if (req.session.user != undefined) {
+
+        id = req.session.user.id;
+        db.Usuario.findByPk(id)
+    .then(function (results) {
+        return res.render("profileEdit", {title:"Profile Edit", usuario: results});
+    })
+    .catch(function (err) {
+        console.log(err);
+    });
+    }
+    else{
+        return res.redirect("/users/login");
+    }
+
+},
+
+
+
+
+
+
+update: function(req, res) {
+let errors = validationResult(req);
+let form = req.body;
+
+if (errors.isEmpty()) {
+
+    let filtrar = {
+        where: {
+        id: req.session.user.id
+        }
+    } 
+
+    let usuario = {
+        mail: form.mail,
+        usuario: form.usuario,
+        contrasenia: bcrypt.hashSync(form.contrasenia, 10),
+        fechaNacimiento: form.fechaNacimiento,
+        numeroDocumento: form.numeroDocumento,
+        foto: form.foto 
+    }
+
+    db.Usuario.update(usuario, filtrar)
+    .then((result) => {
+        return res.redirect("/users/login")
+    })
+    .catch((err) => {
+        return console.log(err);
+    });       
+} 
+    
+
+else {
+   
+    return res.render('profileEdit', {title: "Profile Edit", errors: errors.mapped(), old: req.body }); 
+}
+
+}
 }
